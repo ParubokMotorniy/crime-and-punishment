@@ -1,6 +1,6 @@
 g = 5 #theft gain
-l = 10 #theft loss
 p = 25 #punishment
+l = 10 #theft loss
 
 k = 5 #inspection cost
 r = 10 #inspection reward
