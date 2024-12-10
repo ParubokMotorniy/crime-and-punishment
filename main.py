@@ -71,8 +71,6 @@ def plot_single_rate_progression(num_games:int, num_criminals:int, criminal_deci
         fig, ax = plt.subplots(nrows=2, ncols=len(agent_randomness))
         plt.subplots_adjust(wspace=0.8, hspace=0.8)
 
-        rational_inspection_rates, rational_crime_rates = run_simulation(n_runs, n_agents, Criminal.if_commit_crime_rational, Inspector.if_inspect_rational)
-
         #row, g,p
         parameters_setup = {'low_punishment':[0, 5, 6], 'high_punishment':[1, 5, 25]}
 
@@ -86,8 +84,10 @@ def plot_single_rate_progression(num_games:int, num_criminals:int, criminal_deci
             for idx, randomness in enumerate(agent_randomness):
                 simulation_params.randomness_weight = randomness
                 update_simulation_params( value[1], value[2], simulation_params.k, simulation_params.r, randomness)
-
-                inspection_rates, crime_rates = run_simulation(n_runs, n_agents, criminal_decision_function, inspector_decision_function)
+                
+                rational_inspection_rates, rational_crime_rates = run_simulation(num_games, num_criminals, Criminal.if_commit_crime_rational, Inspector.if_inspect_rational)
+                inspection_rates, crime_rates = run_simulation(num_games, num_criminals, criminal_decision_function, inspector_decision_function)
+                
                 df = pd.DataFrame.from_dict({"inspection_rates":inspection_rates, "crime_rates":crime_rates, "rational_inspection_rates":rational_inspection_rates, "rational_crime_rates":rational_crime_rates},orient='index')
                 df['action_type'] = ['inspection', 'crime', 'inspection', 'crime']
                 df['rationality_type'] = ['bounded', 'bounded', 'rational', 'rational']        
@@ -169,10 +169,10 @@ def plot_rate_matrices(num_games:int, num_criminals:int):
     plot_single_rate_matrix(num_games, num_criminals, Criminal.if_commit_crime_bounded_decision_making, Inspector.if_inspect_bounded_decision_making, "Bounded decision-making")
 
 if __name__ == "__main__":
-    # n_runs = 1000
-    # n_agents = 1000
+    n_runs = 1000
+    n_agents = 1000
 
-    # plot_rate_progression(n_runs, n_agents)
+    plot_rate_progression(n_runs, n_agents)
 
     n_runs = 500
     n_agents = 100
